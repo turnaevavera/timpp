@@ -10,9 +10,11 @@
 Для программы нахождения среднего арифметического:
 
 ![enter image description here](https://pp.userapi.com/c849536/v849536384/143fa9/FhIRlpVxlN8.jpg)
+
 Для нахождения разности сумм четных и нечетных квадратов:
 
 ![enter image description here](https://pp.userapi.com/c849536/v849536384/143fb7/U9Q8UX69cRA.jpg)
+
 Далее программы были отправлены в репозиторий с помощью команд:
 
  - **git add .**
