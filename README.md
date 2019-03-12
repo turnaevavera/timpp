@@ -32,6 +32,17 @@
 |3 0         | 7 1 0 3 2 4 5    |
 |2           |                  |
 
+В ходе работы были использованы следующие функции:
+
+
+![enter image description here](https://pp.userapi.com/c852024/v852024369/e60c5/cGHvdJRYj2I.jpg)
+
+
+
+![enter image description here](https://pp.userapi.com/c852024/v852024369/e60cc/eZY32Tpf8bo.jpg)
+
+
+
 Результат выполнения программы:
 
 
