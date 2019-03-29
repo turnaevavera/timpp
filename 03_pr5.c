@@ -83,7 +83,7 @@ int insert(tree* t, int value)
         t->count++;
         return 0;
       } else {
-        // no memory
+       
         return 2; 
       }
     }
