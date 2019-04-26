@@ -1,21 +1,23 @@
-#include<stdio.h> 
-#include<stdlib.h> 
-#include<stdbool.h>
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <stdbool.h>
 #include <string.h>
 
-typedef struct node
+typedef struct list
 {
   int data;
-  struct node * left;
-  struct node * right;
-  struct node * parent;
-} node;
- 
+  struct list * left;
+  struct list * right;
+  struct list * parent;
+} 
+list;
+
 typedef struct tree
 {
-  struct node * root;   
+  struct list * root;   
   int count;            
-} tree;
+} 
+tree;
 
 void init(tree * t)
 {
@@ -25,118 +27,126 @@ void init(tree * t)
     t = new_t;
 }
 
-int find(tree* t, int value, node* n)
+int find(tree* t, int value, list* l)
 {
-  struct node * b;
-  b = t->root;
-
-  if (t->root == NULL){
+  struct list * ll;
+  ll = t->root;
+  if (t->root == NULL)
+  {
     return 1;
   }
-
-
-  while (1){
-    if (b == NULL) {
+  while (1)
+  {
+    if (ll == NULL) 
+	{
       return 1;
-    } else if (b->data == value){
-
-      n->data = b->data;
-      n->left = b->left;
-      n->right = b->right;
-      n->parent = b->parent;
-
+    } else if (ll->data == value)
+	{
+      l->data = ll->data;
+      l->left = ll->left;
+      l->right = ll->right;
+      l->parent = ll->parent;
       return 0;
-    } else if (value > b->data){
-      b = b->right;
-    } else {
-      b = b->left;
+    } else if (value > ll->data)
+	{
+      ll = ll->right;
+    } else 
+	{
+      ll = ll->left;
     }
   }
-
   return 1;
 }
 
 int insert(tree* t, int value)
 {
-  struct node * n, ** bb, * last_n = NULL;
-
-  struct node * e_n;
-  e_n = malloc(sizeof * e_n);
-
-  int err = find(t, value, e_n);
-  if (err == 0){
+  struct list * l, ** ll, * lll = NULL;
+  struct list * yes;
+  yes = malloc(sizeof * yes);
+  int error = find(t, value, yes);
+  if (error == 0)
+  {
     return 1;
   }
-
-  bb = &t->root;
-  n = t->root;
-
+  ll = &t->root;
+  l = t->root;
   while (1){
-    if (n == NULL) {
-      n = *bb = malloc(sizeof * n);
-      if (n != NULL){
-        n->data = value;
-        n->left = NULL;
-        n->right = NULL;
-        n->parent = last_n;
-
+    if (l == NULL)
+	{
+      l = *ll = malloc(sizeof * l);
+      if (l != NULL)
+	  {
+        l->data = value;
+        l->left = NULL;
+        l->right = NULL;
+        l->parent = lll;
         t->count++;
         return 0;
-      } else {
-        // no memory
+      }
+	  else 
+	  {
         return 2; 
       }
     }
-    last_n = n;
-    
-    if (value > n->data){
-      bb = &n->right;
-      n = n->right;
-    } else {
-      bb = &n->left;
-      n = n->left;
+    lll = l;  
+    if (value > l->data)
+	{
+      ll = &l->right;
+      l = l->right;
+    } 
+	else
+	{
+      ll = &l->left;
+      l = l->left;
     }
   }
   return 0;
 }
 
-int deepness(struct node * n, int deep){
-  if (n == NULL){
+int deepness(struct list * l, int deep)
+{
+  if (l == NULL)
+  {
     return deep;
   }
-  int d1 = deepness(n->left, deep + 1);
-  int d2 = deepness(n->right, deep + 1);
-
+  int d1 = deepness(l->left, deep + 1);
+  int d2 = deepness(l->right, deep + 1);
   return (d1 > d2) ? d1 : d2;
 }
 
-void printNode(struct node * n, int flow, int deep, int perv){
-  //printf("flow: %d, deep: %d\n", flow, deep);
-
-  if (flow == deep){
-      if (perv > 0){
+void printList(struct list * l, int flow, int deep, int perv)
+{
+  if (flow == deep)
+  {
+      if (perv > 0)
+	  {
         printf(" ");
       }
       
-    if (n == NULL){
+    if (l == NULL)
+	{
       printf("_");
     } else{
-      printf("%d", n->data);
+      printf("%d", l->data);
     } 
-  } else if (n != NULL){
-    printNode(n->left, flow + 1, deep, perv);
-    printNode(n->right, flow + 1, deep, perv + 1);
-  } else {
-    printNode(n, flow + 1, deep, perv);
-    printNode(n, flow + 1, deep, perv + 1);
+  } 
+  else if (l != NULL)
+  {
+    printList(l->left, flow + 1, deep, perv);
+    printList(l->right, flow + 1, deep, perv + 1);
+  } 
+  else 
+  {
+    printList(l, flow + 1, deep, perv);
+    printList(l, flow + 1, deep, perv + 1);
   }
 }
 
-void print(struct node * n)
+void print(struct list * l)
 {
-  int m = deepness(n, 0);
+  int m = deepness(l, 0);
   for (int i = 1; i <= m; i++){
-    printNode(n, 1, i, 0);
+    printList(l, 1, i, 0);
     printf("\n");
   }
 }   
@@ -145,100 +155,56 @@ void printTree(struct tree * t)
 {
     print(t->root);
 }
-
-void printEx1(struct node * n)
+ 
+void print_round3(struct tree * t)
 {
-  int m = deepness(n, 0);
-  int xex = 0;
-  for (int i = 1; i <= m; i++){
-    if (xex > 0){
-        printf(" ");
-    } else {
-        xex++;
-    }
-    printNode(n, 1, i, 0);
-  }
-}   
-
-void printEx2(struct tree * t)
-{
-    node * a[15];
-    int a_i = 0;
-    
-    node * write[15];
-    int w_i = 0;
-    
-    node * n = t->root;
-    
-    while (w_i < t->count){ 
-        while (n != NULL){
-            // printf("flow n: %d\n", n->data);
-            w_i++;
-            if (n->right != NULL){
-                a_i++;
-                a[a_i] = n->right;
+    list * a[15];
+    int var1 = 0;
+    list * write[15];
+    int var2 = 0;
+    list * l = t->root;
+    while (var2 < t->count)
+	{ 
+        while (l != NULL)
+		{
+            var2++;
+            if (l->right != NULL)
+			{
+                var1++;
+                a[var1] = l->right;
             }
-            write[w_i] = n;
-            n = n->left;
-            
-            // printf("a:");
-            // for (int i = 1; i <= a_i; i++){
-            //     printf(" %d", a[i]->data);
-            // }
-            // printf("\n");
-            // printf("w_i: %d\n", w_i);  
+            write[var2] = l;
+            l = l->left; 
         }
-        n = a[a_i];
-        a_i -= 1;
-        
+        l = a[var1];
+        var1 -= 1;   
     }
-    
     int xex = 0;
-    for (int i = 1; i <= w_i; i++){
-        if (xex > 0){
+    for (int i = 1; i <= var2; i++)
+	{
+        if (xex > 0)
+		{
             printf(" ");
-        } else {
+        } 
+		else
+		{
             xex++;
         }
         printf("%d", write[i]->data);
-    }
-    
+    }   
   printf("\n");
 }   
 
-void printEx3(struct node * n, int xex)
+int main()
 {
-    if (n->left != NULL){
-        printEx3(n->left, xex + 1);
-    } 
-    if (n->right != NULL){
-        printEx3(n->right, xex + 1);
-    }
-    printf("%d", n->data);
-    if (xex > 0){
-        printf(" ");
-    }
-    
-}   
-
-int main(){
-
   struct tree * t = malloc(sizeof t);
   init(t);
-
-
-  for (int i = 0; i < 7; i++){
+  for (int i = 0; i < 7; i++)
+  {
     int a;
     scanf("%d", &a);
     insert(t, a);
   }
-  
-    
-  //printEx1(t->root);
-  //printf("\n");
-  printEx2(t);
-  //printEx3(t->root, 0);
-  //printf("\n");
-
+  print_round3(t);
   return 0;
 }
